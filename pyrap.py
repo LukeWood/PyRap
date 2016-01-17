@@ -92,17 +92,18 @@ with open('progfiles/raps.txt') as f:
 	for line in contents:
 			linesplit = line.split(":")
 			if(len(linesplit) ==2):
-				inp = linesplit[0]
-				inp = converttoint(rapper_list,inp)
-				for i in range(0,insize-len(inp)):
-					inp.append(randint(0,9))
-				rap = linesplit[1].split()
-				rap = converttoint(word_list,rap)
-				for i in range(0,outsize-len(rap)):
-					rap.append(-1)
-				if len(rap) == outsize:
-					if len(inp) == insize:	
-						ds.addSample(inp,rap)
+				for i in 10:
+					inp = linesplit[0]
+					inp = converttoint(rapper_list,inp)
+					for i in range(0,insize-len(inp)):
+							inp.append(randint(0,9))
+					rap = linesplit[1].split()
+					rap = converttoint(word_list,rap)
+					for i in range(0,outsize-len(rap)):
+						rap.append(-1)
+					if len(rap) == outsize:
+						if len(inp) == insize:	
+							ds.addSample(inp,rap)
 	
 print(len(ds))
 #trainer.trainUntilConvergence()
