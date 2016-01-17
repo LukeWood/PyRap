@@ -53,7 +53,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,15,15,15,outsize)
+net = buildNetwork(insize,50,50,50,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
