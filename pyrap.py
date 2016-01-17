@@ -49,7 +49,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,100,100,100,outsize)
+net = buildNetwork(insize,10,10,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -103,7 +103,7 @@ with open('progfiles/raps.txt') as f:
 	for line in contents:
 			linesplit = line.split(":")
 			if(len(linesplit) ==2):
-				for i in range(0,2):
+				for i in range(0,1):
 					inp = linesplit[0]
 					inp = convertrappertoint(rapper_list,inp)
 					inp.append(randint(0,9))
