@@ -4,13 +4,10 @@ from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from random import randint
 from pybrain.structure import FeedForwardNetwork
-import jsonpickle
+from pybrain.tools.customxml import NetworkWriter
 #END IMPORTS
 
 #CLASS DECLARATIONS BEGIN
-class rapper(object):
-	def __init__(self,net):
-		self.net = net
 #END CLASS DECLARATIONS
 #FUNCTION DECLARATIONS BEGIN
 def wordinlist(word_list,tword):
@@ -56,7 +53,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,10,10,10,outsize)
+net = buildNetwork(insize,15,15,15,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -75,7 +72,8 @@ with open('progfiles/rapperlist.txt') as f:
 	for line in content:
 		for word in line.split(","):
 			if not word =="\n":
-				rapper_list.append(word.strip())
+				if not word =="":
+					rapper_list.append(word.strip())
 
 #adding any nonexisting words from the raps to nwords
 with open('progfiles/raps.txt') as f:
@@ -127,9 +125,7 @@ trainer.trainUntilConvergence()
 print("Congratulations, your network has been trained")
 print("Please enter where you want to save your file")
 fname = input()
-jsonrapper = jsonpickle.encode(rapper(net))
-with open(fname+".rpr","w+") as f:
-	f.write(jsonrapper)
+NetworkWriter.writeToFile(net,fname + ".xml")
 
 print("Enter a rappers name from the list of rappers available:")
 print(rapper_list)
