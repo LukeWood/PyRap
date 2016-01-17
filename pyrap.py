@@ -3,9 +3,15 @@ from pybrain.utilities import percentError
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from random import randint
+from pybrain.structure import FeedForwardNetwork
 import jsonpickle
 #END IMPORTS
 
+#CLASS DECLARATIONS BEGIN
+class rapper(object):
+	def __init__(self,net):
+		self.net = net
+#END CLASS DECLARATIONS
 #FUNCTION DECLARATIONS BEGIN
 def wordinlist(word_list,tword):
 	for word in word_list:
@@ -50,7 +56,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,50,50,50,outsize)
+net = buildNetwork(insize,10,10,10,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -118,11 +124,12 @@ with open('progfiles/raps.txt') as f:
 						if len(inp) == insize:	
 							ds.addSample(inp,rap)
 trainer.trainUntilConvergence()
-print("Congragulations, your network has been trained")
+print("Congratulations, your network has been trained")
 print("Please enter where you want to save your file")
 fname = input()
-
-
+jsonrapper = jsonpickle.encode(rapper(net))
+with open(fname+".rpr","w+") as f:
+	f.write(jsonrapper)
 
 print("Enter a rappers name from the list of rappers available:")
 print(rapper_list)
