@@ -92,7 +92,7 @@ with open('progfiles/raps.txt') as f:
 	for line in contents:
 			linesplit = line.split(":")
 			if(len(linesplit) ==2):
-				for i in 10:
+				for i in range(0,10):
 					inp = linesplit[0]
 					inp = converttoint(rapper_list,inp)
 					for i in range(0,insize-len(inp)):
