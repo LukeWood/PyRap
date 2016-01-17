@@ -108,7 +108,6 @@ with open('progfiles/raps.txt') as f:
 						if len(inp) == insize:	
 							ds.addSample(inp,rap)
 	
-print(len(ds))
 #trainer.trainUntilConvergence()
 
 print("Enter a rappers name from the list of rappers available:")
