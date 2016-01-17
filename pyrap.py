@@ -3,6 +3,7 @@ from pybrain.utilities import percentError
 from pybrain.tools.shortcuts import buildNetwork
 from pybrain.supervised.trainers import BackpropTrainer
 from random import randint
+import jsonpickle
 #END IMPORTS
 
 #FUNCTION DECLARATIONS BEGIN
@@ -49,7 +50,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,10,10,outsize)
+net = buildNetwork(insize,50,50,50,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -66,7 +67,7 @@ with open('progfiles/wordlist.txt') as f:
 with open('progfiles/rapperlist.txt') as f:
 	content = f.readlines()
 	for line in content:
-		for word in line.split():
+		for word in line.split(","):
 			if not word =="\n":
 				rapper_list.append(word.strip())
 
@@ -90,7 +91,7 @@ with open('progfiles/raps.txt') as f:
 with open("progfiles/rapperlist.txt","a") as f:
 	for rapper in nrappers:
 		if not rapper == "\n":
-			f.write(rapper+" ")
+			f.write(rapper+",")
 
 #adding them in to the wordlist file
 with open('progfiles/wordlist.txt', 'a') as f:
@@ -117,13 +118,16 @@ with open('progfiles/raps.txt') as f:
 						if len(inp) == insize:	
 							ds.addSample(inp,rap)
 trainer.trainUntilConvergence()
+print("Congragulations, your network has been trained")
+print("Please enter where you want to save your file")
+fname = input()
+
+
 
 print("Enter a rappers name from the list of rappers available:")
 print(rapper_list)
 n1 = input()
 n1 = rapper_list.index(n1)
-
-
 n2 = randint(0,9)
 
 output = net.activate((n1,n2))
