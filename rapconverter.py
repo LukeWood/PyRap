@@ -21,6 +21,4 @@ allc = string.maketrans("","")
 noweirdchars = allc.translate(allc,string.ascii_lowercase+ " ")
 lyrics = lyrics.translate(allc,noweirdchars)
 with open("progfiles/raps.txt","a") as f:
-	f.write(rname+":"+lyrics)
-with open("progfiles/rapperlist.txt","a") as f:
-	f.write(rname+" ")
+	f.write("\n"+rname+":"+lyrics)
