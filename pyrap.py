@@ -11,6 +11,13 @@ def wordinlist(word_list,tword):
 		if word == tword:
 			return True
 	return False
+def convertrappertoint(word_list, rapper):
+	asint = list()
+	try:
+		asint.append(word_list.index(rapper))
+	except Exception:
+		asint.append(-1)
+	return asint
 
 def converttoint(word_list,words):
 	asint = list()
@@ -42,7 +49,7 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,500,500,500,500,500,500,outsize)
+net = buildNetwork(insize,100,100,100,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -79,6 +86,7 @@ with open('progfiles/raps.txt') as f:
 				if not wordinlist(word_list,word.lower()):
 					word_list.append(word.lower())
 					nwords.append(word.lower())
+
 with open("progfiles/rapperlist.txt","a") as f:
 	for rapper in nrappers:
 		if not rapper == "\n":
@@ -95,27 +103,28 @@ with open('progfiles/raps.txt') as f:
 	for line in contents:
 			linesplit = line.split(":")
 			if(len(linesplit) ==2):
-				for i in range(0,10):
+				for i in range(0,2):
 					inp = linesplit[0]
-					inp = converttoint(rapper_list,inp)
-					for i in range(0,insize-len(inp)):
-							inp.append(randint(0,9))
+					inp = convertrappertoint(rapper_list,inp)
+					inp.append(randint(0,9))
 					rap = linesplit[1].split()
 					rap = converttoint(word_list,rap)
 					for i in range(0,outsize-len(rap)):
 						rap.append(-1)
+					if len(rap)>outsize:
+						rap = rap[:-(len(rap)-outsize)]
 					if len(rap) == outsize:
 						if len(inp) == insize:	
 							ds.addSample(inp,rap)
-	
-#trainer.trainUntilConvergence()
+trainer.trainUntilConvergence()
 
 print("Enter a rappers name from the list of rappers available:")
 print(rapper_list)
 n1 = input()
 n1 = rapper_list.index(n1)
-print("Enter an integer (ideally) between 0 and 9")
-n2 = int(input())
+
+
+n2 = randint(0,9)
 
 output = net.activate((n1,n2))
 output = inttowords(word_list,output)
