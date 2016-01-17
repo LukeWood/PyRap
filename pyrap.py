@@ -53,7 +53,9 @@ nwords = list()
 rapper_list = list()
 nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,50,50,50,outsize)
+print("Enter the size for the three layers (High numbers will take a very long time, reccomended to keep below 30):")
+size = int(input())
+net = buildNetwork(insize,size,size,size,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
@@ -121,6 +123,7 @@ with open('progfiles/raps.txt') as f:
 					if len(rap) == outsize:
 						if len(inp) == insize:	
 							ds.addSample(inp,rap)
+print("Training, this may take awhile.")
 trainer.trainUntilConvergence()
 print("Congratulations, your network has been trained")
 print("Please enter where you want to save your file")
