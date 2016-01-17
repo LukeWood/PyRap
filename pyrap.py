@@ -20,17 +20,16 @@ def converttoint(word_list,words):
 		except Exception:
 			asint.append(-1)
 	return asint
-
 def inttowords(word_list,nums):
 	aswords = list()
 	for i in nums:
 		if i < -.5:
-			aswords.append(" ")
+			aswords.append("")
 		else:
 			try:
 				aswords.append(word_list[int(i)])
 			except Exception:
-				aswords.append(" ")
+				aswords.append("")
 	return aswords
 
 #FUNCTION DECLARATIONS END
@@ -38,17 +37,18 @@ def inttowords(word_list,nums):
 #BEGIN VARIABLE DECLARATIONS
 word_list = list()
 insize=2
-outsize = 50
+outsize = 500
 nwords = list()
 rapper_list = list()
+nrappers = list()
 ds = SupervisedDataSet(insize,outsize)
-net = buildNetwork(insize,5,outsize)
+net = buildNetwork(insize,500,500,500,outsize)
 trainer = BackpropTrainer(net,ds)
 #END VARIABLE DECLARATIONS
 
 
 #fetching list of all possible words
-with open('wordlist.txt') as f:
+with open('progfiles/wordlist.txt') as f:
 	content = f.readlines()
 	for line in content:
 		for subline in line.split(':'):
@@ -56,35 +56,38 @@ with open('wordlist.txt') as f:
 				word_list.append(word.strip())
 
 #fetching list of rappers
-with open('rapperlist.txt') as f:
+with open('progfiles/rapperlist.txt') as f:
 	content = f.readlines()
 	for line in content:
-		for subline in line.split():
-			for word in subline:
-				rapper_list.append(word.strip())
+		for word in line.split():
+			rapper_list.append(word.strip())
 
-#adding any unused words from the raps to nwords
-with open('raps.txt') as f:
+#adding any nonexisting words from the raps to nwords
+with open('progfiles/raps.txt') as f:
 	content = f.readlines()
 	for line in content:
 		slines = line.split(":")
 		rappername = slines[0]
 		if not wordinlist(rapper_list,rappername):
 			rapper_list.append(rappername)
+			nrappers.append(rappername)
 		for subline in slines:
 			words = set(word.strip() for word in subline.split())
 			for word in words:
 				if not wordinlist(word_list,word.lower()):
 					word_list.append(word.lower())
 					nwords.append(word.lower())
+with open("progfiles/rapplist.txt","a") as f:
+	for rapper in nrappers:
+		f.write(rapper+" ")
 
 #adding them in to the wordlist file
-with open('wordlist.txt', 'a') as f:
+with open('progfiles/wordlist.txt', 'a') as f:
 	for word in nwords:
 		f.write(word + " ")
 
 #opening up raps
-with open('raps.txt') as f:
+with open('progfiles/raps.txt') as f:
 	contents = f.readlines()
 	for line in contents:
 			linesplit = line.split(":")
@@ -101,14 +104,20 @@ with open('raps.txt') as f:
 					if len(inp) == insize:	
 						ds.addSample(inp,rap)
 	
-trainer.trainUntilConvergence()
+print(len(ds))
+#trainer.trainUntilConvergence()
 
 print("Enter a rappers name from the list of rappers available:")
+print(rapper_list)
 n1 = input()
-print("Enter an integer between 0 and 9")
+n1 = rapper_list.index(n1)
+print("Enter an integer (ideally) between 0 and 9")
 n2 = int(input())
 
 output = net.activate((n1,n2))
 output = inttowords(word_list,output)
-print(output)
-
+toprint = ""
+for word in output:
+	if not word == "":
+		toprint+=word+" "
+print(toprint)
