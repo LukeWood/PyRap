@@ -22,16 +22,19 @@ def converttoint(word_list,words):
 def inttowords(word_list,nums):
 	aswords = list()
 	for i in nums:
-		try:
-			aswords.append(word_list[int(i)])
-		except Exception:
+		if i < -.5:
 			aswords.append(" ")
+		else:
+			try:
+				aswords.append(word_list[int(i)])
+			except Exception:
+				aswords.append(" ")
 	return aswords
 
 #BEGIN VARIABLE DECLARATIONS
 word_list = list()
 insize=3
-outsize = 6
+outsize = 10
 nwords = list()
 ds = SupervisedDataSet(insize,outsize)
 net = buildNetwork(insize,5,outsize)
@@ -67,14 +70,14 @@ with open('raps.txt') as f:
 			if(len(linesplit) ==2):
 				inp = linesplit[0].split()
 				inp = converttoint(word_list,inp)
-				for i in range(0,3-len(inp)):
-					inp.append(0)
+				for i in range(0,insize-len(inp)):
+					inp.append(-1)
 				rap = linesplit[1].split()
 				rap = converttoint(word_list,rap)
-				for i in range(0,6-len(rap)):
-					rap.append(0)
-				if len(rap) == 6:
-					if len(inp) == 3:	
+				for i in range(0,outsize-len(rap)):
+					rap.append(-1)
+				if len(rap) == outsize:
+					if len(inp) == insize:	
 						ds.addSample(inp,rap)
 	
 trainer.trainUntilConvergence()
@@ -84,7 +87,7 @@ n2 = int(input())
 n3 = int(input())
 
 output = net.activate((n1,n2,n3))
-
+print(output)
 output = inttowords(word_list,output)
 print(output)
 
