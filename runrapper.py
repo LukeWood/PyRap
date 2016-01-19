@@ -26,14 +26,8 @@ with open('progfiles/rapperlist.txt') as f:
 				if not word =="":
 					rapper_list.append(word.strip())
 
-
-print("Enter a rappers name from the list of rappers available:")
-print(rapper_list)
-n1 = input()
-n1 = rapper_list.index(n1)
-
-n2 = randint(0,9)
-print(n2)
+n1 = randint(0,20)
+n2 = randint(0,20)
 print("Enter file to save the rap to.")
 fname = input()
 output = net.activate((n1,n2))
