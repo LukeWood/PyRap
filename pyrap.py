@@ -48,7 +48,8 @@ def inttowords(word_list,nums):
 #BEGIN VARIABLE DECLARATIONS
 word_list = list()
 insize=2
-outsize = 500
+print("How long do you estimate the longest rap/poem is?")
+outsize = int(input())
 nwords = list()
 rapper_list = list()
 nrappers = list()
@@ -110,19 +111,18 @@ with open('progfiles/raps.txt') as f:
 	for line in contents:
 			linesplit = line.split(":")
 			if(len(linesplit) ==2):
-				for i in range(0,1):
-					inp = linesplit[0]
-					inp = convertrappertoint(rapper_list,inp)
-					inp.append(randint(0,9))
-					rap = linesplit[1].split()
-					rap = converttoint(word_list,rap)
-					for i in range(0,outsize-len(rap)):
-						rap.append(-1)
-					if len(rap)>outsize:
-						rap = rap[:-(len(rap)-outsize)]
-					if len(rap) == outsize:
-						if len(inp) == insize:	
-							ds.addSample(inp,rap)
+				inp = linesplit[0]
+				inp = convertrappertoint(rapper_list,inp)
+				inp.append(randint(0,9))
+				rap = linesplit[1].split()
+				rap = converttoint(word_list,rap)
+				for i in range(0,outsize-len(rap)):
+					rap.append(-1)
+				if len(rap)>outsize:
+					rap = rap[:-(len(rap)-outsize)]
+				if len(rap) == outsize:
+					if len(inp) == insize:	
+						ds.addSample(inp,rap)
 print("Training, this may take awhile.")
 trainer.trainUntilConvergence()
 print("Congratulations, your network has been trained")
